@@ -1,0 +1,3 @@
+### GET customers with specific id
+GET http://{{host}}:{{port}}/api/v1/customers/1
+Accept: application/json
