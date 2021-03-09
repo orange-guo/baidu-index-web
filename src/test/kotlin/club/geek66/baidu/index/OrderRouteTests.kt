@@ -4,6 +4,9 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
 
 /**
  *
@@ -22,3 +25,7 @@ internal class OrderRouteTests : FunSpec({
 		}
 	}
 })
+
+fun `获取明年的时间，以ISO-LOCAL-DATE格式返回`(): String = TimeUnit.DAYS.sleep(360).let {
+	LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
+}

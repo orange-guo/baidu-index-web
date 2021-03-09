@@ -17,7 +17,7 @@ fun Route.configureCustomerRoutes() {
 		get("{id}") {
 			call.respond(
 				Customer(
-					id = call.parameters.get("id")!!,
+					id = call.parameters["id"]!!,
 					name = "4396"
 				)
 			)
