@@ -1,13 +1,13 @@
 package club.geek66.baidu.index
 
-import club.geek66.baidu.index.routes.configureCustomerRoutes
-import club.geek66.baidu.index.routes.configureHelloRoutes
+import club.geek66.baidu.index.common.DEFAULT_JSON
+import club.geek66.baidu.index.routes.configureIndexRoutes
+import club.geek66.baidu.index.routes.configureWelcomeRoutes
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.server.netty.*
-import kotlinx.serialization.json.Json
 
 /**
  *
@@ -20,12 +20,10 @@ fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
 	install(ContentNegotiation) {
-		json(json = Json(Json.Default) {
-			// prettyPrint = true
-		})
+		json(DEFAULT_JSON)
 	}
 	routing {
-		configureCustomerRoutes()
-		configureHelloRoutes()
+		configureWelcomeRoutes()
+		configureIndexRoutes()
 	}
 }

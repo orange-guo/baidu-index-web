@@ -1,0 +1,59 @@
+{
+	"status": 0,
+	"data": {
+		"userIndexes": [
+			{
+				"word": [
+					{
+						"name": "\u8521\u5f90\u5764",
+						"wordType": 1
+					}
+				],
+				"all": {
+					"startDate": "2021-01-01",
+					"endDate": "2021-01-03",
+					"data": "NTD-NZTvwpNZTG-cp"
+				},
+				"pc": {
+					"startDate": "2021-01-01",
+					"endDate": "2021-01-03",
+					"data": "TTGFZcwG-ZcwNT"
+				},
+				"wise": {
+					"startDate": "2021-01-01",
+					"endDate": "2021-01-03",
+					"data": "N-TDGZTp-TNZTTcwG"
+				},
+				"type": "day"
+			}
+		],
+		"generalRatio": [
+			{
+				"word": [
+					{
+						"name": "\u8521\u5f90\u5764",
+						"wordType": 1
+					}
+				],
+				"all": {
+					"avg": 28127,
+					"yoy": 4,
+					"qoq": 53
+				},
+				"pc": {
+					"avg": 1973,
+					"yoy": -46,
+					"qoq": -14
+				},
+				"wise": {
+					"avg": 26153,
+					"yoy": 13,
+					"qoq": 62
+				}
+			}
+		],
+		"uniqid": "ca1905f8d82d46993eabcad02a1cef40"
+	},
+	"logid": 3066574071,
+	"message": 0
+}

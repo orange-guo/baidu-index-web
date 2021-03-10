@@ -11,8 +11,8 @@ import io.ktor.routing.*
  * @time: 下午3:59
  * @copyright: Copyright 2021 by orange
  */
-fun Route.configureHelloRoutes() {
-	get("/") {
+fun Route.configureWelcomeRoutes() {
+	get("/welcome") {
 		call.respondText("Hello")
 	}
 }

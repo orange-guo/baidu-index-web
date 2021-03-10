@@ -16,16 +16,19 @@ application {
 
 buildscript {
 	repositories {
+		maven { setUrl("https://mirrors.huaweicloud.com/repository/maven/") }
 		maven { setUrl("http://maven.aliyun.com/nexus/content/groups/public/") }
+		maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots") }
 		maven { setUrl("https://kotlin.bintray.com/kotlinx") }
 		jcenter()
 	}
 }
 
 repositories {
+	maven { setUrl("https://mirrors.huaweicloud.com/repository/maven/") }
 	maven { setUrl("http://maven.aliyun.com/nexus/content/groups/public/") }
-	maven { setUrl("https://kotlin.bintray.com/kotlinx") }
 	maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots") }
+	maven { setUrl("https://kotlin.bintray.com/kotlinx") }
 	jcenter()
 }
 
@@ -50,12 +53,17 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
 
-	// ktor
+	// ktor-server
 	implementation("io.ktor:ktor-server-core:$ktorVersion")
 	implementation("io.ktor:ktor-serialization:$ktorVersion")
 	implementation("io.ktor:ktor-server-netty:$ktorVersion")
 	testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
 
+	// ktor-client
+	implementation("io.ktor:ktor-client-core:$ktorVersion")
+	implementation("io.ktor:ktor-client-cio:$ktorVersion")
+	implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+	implementation("io.ktor:ktor-client-logging:$ktorVersion")
 	// kotest
 	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 	testImplementation("io.kotest:kotest-property:$kotestVersion")
