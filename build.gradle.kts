@@ -29,6 +29,7 @@ repositories {
 	maven { setUrl("http://maven.aliyun.com/nexus/content/groups/public/") }
 	maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots") }
 	maven { setUrl("https://kotlin.bintray.com/kotlinx") }
+	maven { setUrl("https://dl.bintray.com/arrow-kt/arrow-kt/") }
 	jcenter()
 }
 
@@ -39,6 +40,7 @@ val h2Version: String by project
 val javaVersion: String by project
 val junitVersion: String by project
 val kotestVersion: String by project
+val arrowVersion: String by project
 
 dependencies {
 	// kotlin standard
@@ -72,9 +74,9 @@ dependencies {
 	implementation("com.h2database:h2:$h2Version")
 	implementation("ch.qos.logback:logback-classic:1.2.3")
 
-	/*implementation("io.arrow-kt:arrow-core:$arrowVersion")
+	implementation("io.arrow-kt:arrow-core:$arrowVersion")
 	implementation("io.arrow-kt:arrow-syntax:$arrowVersion")
-	kapt("io.arrow-kt:arrow-meta:$arrowVersion")
+	/*kapt("io.arrow-kt:arrow-meta:$arrowVersion")
 	kaptTest("io.arrow-kt:arrow-meta:$arrowVersion")*/
 }
 

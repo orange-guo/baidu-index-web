@@ -24,8 +24,8 @@ internal class IndexRoutesTest : FunSpec({
 				"/api/v1/indexes/range=DAY;keywords=鸡你太美;startDate=2012-01-01;endDate=2012-01-02"
 			).apply {
 				response.status() shouldBe HttpStatusCode.OK
-				val range: KeywordsIndexRange = Json.decodeFromString(response.content!!)
-				range.startDate shouldBe "2021-01-01"
+				val dateRanges: IndexInDateRanges = Json.decodeFromString(response.content!!)
+				dateRanges.startDate shouldBe "2021-01-01"
 			}
 		}
 	}
