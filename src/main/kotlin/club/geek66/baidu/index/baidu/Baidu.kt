@@ -18,7 +18,6 @@ import kotlinx.serialization.encodeToString
  * @time: 下午4:13
  * @copyright: Copyright 2021 by orange
  */
-
 val userAgentMozilla: HttpRequestBuilder.() -> Unit = {
 	userAgent("Mozilla/5.0 (X11; Linux x86_64)")
 }
@@ -38,7 +37,7 @@ val getIndex: (String, String, String, String) -> (List<IndexInDateRange>) =
 					parameter("word", "0")
 					parameter("startDate", startDate)
 					parameter("endDate", endDate)
-					parameter("word", listOf(Keyword(keyword, wordType = 1)).let(DEFAULT_JSON::encodeToString))
+					parameter("word", listOf(listOf(Keyword(keyword, wordType = 1))).let(DEFAULT_JSON::encodeToString))
 				}.let(DEFAULT_JSON::decodeFromString)
 
 			val decode = (decodePtbkEncodeData)(exchangePtbk(token, response.data.uniqid))

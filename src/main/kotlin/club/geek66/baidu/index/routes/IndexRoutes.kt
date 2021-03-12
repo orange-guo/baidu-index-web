@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
  * @copyright: Copyright 2021 by orange
  */
 fun Route.configureIndexRoutes() {
-	route("/api/v1/indexes;keyword={keyword};startDate={startDate};endDate={endDate}") {
+	route("/api/v1/indexes/{keyword}") {
 		get {
 			call.run {
 				val startDate = parameters.getOrFail("startDate")
