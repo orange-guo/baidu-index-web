@@ -5,7 +5,6 @@ import club.geek66.baidu.index.common.DEFAULT_HTTP_CLI
 import club.geek66.baidu.index.common.DEFAULT_JSON
 import club.geek66.baidu.index.common.decodePtbkEncodeData
 import club.geek66.baidu.index.routes.IndexInDateRange
-import club.geek66.baidu.index.routes.IndexInDateRanges
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
@@ -20,64 +19,49 @@ import kotlinx.serialization.encodeToString
  * @copyright: Copyright 2021 by orange
  */
 
-const val BAIDU_USS =
-	"ndyWnQxQkpqaS1LZGZDNktQb1BORE9VTUhXaUhyNXRRT2JUc01CMFFweX5JQnBnSVFBQUFBJCQAAAAAAAAAAAEAAAC-5SM2yta7-sbBu7XBywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL-T8l-~k~JfM"
-
-const val URL_SEARCH_INDEX = "https://index.baidu.com/api/SearchApi/index"
-
-const val URL_SEARCH_PTBK = "http://index.baidu.com/Interface/ptbk"
-
-val headerWithUserAgent: HttpRequestBuilder.(String) -> Unit = { userAgent ->
-	userAgent(userAgent)
+val userAgentMozilla: HttpRequestBuilder.() -> Unit = {
+	userAgent("Mozilla/5.0 (X11; Linux x86_64)")
 }
 
 val headerWithAuth: HttpRequestBuilder.(String) -> Unit = { baiduUss ->
 	cookie("BDUSS", baiduUss)
 }
 
-val buildCommon: HttpRequestBuilder.() -> Unit = {
-	headerWithUserAgent("Mozilla/5.0 (X11; Linux x86_64)")
-	headerWithAuth(BAIDU_USS)
-}
+val getIndex: (String, String, String, String) -> (List<IndexInDateRange>) =
+	{ token, keyword, startDate, endDate ->
+		runBlocking {
+			val response: BaiduResult<SearchIndexResult> =
+				DEFAULT_HTTP_CLI.get<String>("https://index.baidu.com/api/SearchApi/index") {
+					userAgentMozilla()
+					headerWithAuth(token)
+					parameter("area", "0")
+					parameter("word", "0")
+					parameter("startDate", startDate)
+					parameter("endDate", endDate)
+					parameter("word", listOf(Keyword(keyword, wordType = 1)).let(DEFAULT_JSON::encodeToString))
+				}.let(DEFAULT_JSON::decodeFromString)
 
-val getIndex: (Set<String>, String, String) -> (IndexInDateRanges) = { keywords, startDate, endDate ->
-	runBlocking {
-		val response: BaiduResult<SearchIndexResult> =
-			DEFAULT_HTTP_CLI.get<String>(URL_SEARCH_INDEX) {
-				buildCommon()
-				parameter("area", "0")
-				parameter("word", "0")
-				parameter("startDate", startDate)
-				parameter("endDate", endDate)
-				parameter(
-					"word",
-					keywords.map { Keyword(name = it, wordType = 1) }.map(::listOf).let(DEFAULT_JSON::encodeToString)
+			val decode = (decodePtbkEncodeData)(exchangePtbk(token, response.data.uniqid))
+
+			response.data.indexes.map {
+				Triple(it.keywords.first().name, it.type, it.all)
+			}.map {
+				IndexInDateRange(
+					keyword = it.first,
+					dateInterval = it.second,
+					startDate = it.third.startDate,
+					endDate = it.third.endDate,
+					indexes = decode(it.third.data).trim().split(",").toList().map(String::toInt)
 				)
-			}.let(DEFAULT_JSON::decodeFromString)
-
-		val decode = (decodePtbkEncodeData)(exchangePtbk(response.data.uniqid))
-
-		response.data.indexes.map {
-			IndexInDateRange(
-				keyword = it.keywords.first().name,
-				indexes = decode(it.all.data).trim().split(",").toList().map(String::toInt)
-			)
-		}.let {
-			IndexInDateRanges(
-				startDate = startDate,
-				endDate = endDate,
-				rangeUnit = response.data.indexes.first().type,
-				rangeLength = it.first().indexes.count(),
-				ranges = it
-			)
+			}
 		}
 	}
-}
 
-val exchangePtbk: (String) -> String = { uniqid ->
+val exchangePtbk: (String, String) -> String = { token, uniqid ->
 	runBlocking {
-		DEFAULT_HTTP_CLI.get<String>(URL_SEARCH_PTBK) {
-			buildCommon()
+		DEFAULT_HTTP_CLI.get<String>("http://index.baidu.com/Interface/ptbk") {
+			userAgentMozilla()
+			headerWithAuth(token)
 			parameter("uniqid", uniqid)
 		}.let {
 			DEFAULT_JSON.decodeFromString<BaiduResult<String>>(it)

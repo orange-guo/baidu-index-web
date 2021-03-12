@@ -30,11 +30,11 @@ data class Indexes(
 	val all: KeywordIndexes,
 	val pc: KeywordIndexes,
 	val wise: KeywordIndexes,
-	val type: IndexRangeType
+	val type: DateInterval
 )
 
 @Serializable
-enum class IndexRangeType {
+enum class DateInterval {
 	@SerialName("day")
 	DAY,
 
